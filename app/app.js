@@ -5,6 +5,7 @@ const app = express();
 const db = require('./models');
 
 const auth = require("./routes/auth.route")
+const medecin = require('./routes/medecin.route');
 
 
 
@@ -26,6 +27,8 @@ db.sequelize.sync()
 
 
 app.use("/auth", auth)
+app.use("/medecin", medecin)
+
 
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to gestion de medicament application." });
