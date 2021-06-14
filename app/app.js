@@ -8,6 +8,7 @@ const auth = require("./routes/auth.route")
 const medecin = require('./routes/medecin.route');
 
 
+app.use(express.static('public'));
 
 
 var corsOptions = {

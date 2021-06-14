@@ -11,8 +11,11 @@ module.exports = function(sequelize, Sequelize) {
         prenom: {
             type: Sequelize.STRING(30)
         },
+        photo: {
+            type: Sequelize.STRING(30)
+        },
         numero: {
-            type: Sequelize.DOUBLE,
+            type: Sequelize.STRING(30),
             unique: true
         },
         motDePasse: {
@@ -27,9 +30,7 @@ module.exports = function(sequelize, Sequelize) {
         longtitude: {
             type: Sequelize.DOUBLE
         },
-        adresse: {
-            type: Sequelize.STRING(30)
-        },
+
         birthDate: {
             type: Sequelize.DATEONLY
         },
@@ -37,7 +38,12 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.STRING(30)
         },
         gender: {
-            type: Sequelize.STRING(30)
+            type: Sequelize.DataTypes.ENUM({
+                values: ['HOMME', 'FEMME']
+            })
+        },
+        experience: {
+            type: Sequelize.INTEGER,
         }
     }, {
         freezeTableName: true,
