@@ -101,9 +101,10 @@ const addRdv = async(req, res) => {
 
 
 const getAllRdv = (req, res) => {
+    const id = req.params.id;
 
     RendezVous.findAll({
-            idMedecin: req.params.id,
+            idMedecin: id,
         })
         .then(data => {
             res.send(data);
@@ -114,7 +115,33 @@ const getAllRdv = (req, res) => {
             });
         });
 };
+
+const getAllRdvEnCours = (req, res) => {
+    const id = req.params.id;
+    RendezVous.findAll({
+            where: {
+                [Op.and]: {
+                    idMedecin: id,
+                    EnCours: true,
+                }
+            }
+        })
+        .then(data => {
+            if (data.length > 0) {
+                res.send(data);
+            } else {
+                console.log('azaa')
+                res.send({ message: "le medecin avec id " + id + " n'a pas de rendez vous en cours" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving RDV."
+            });
+        });
+};
 module.exports = {
     addRdv,
-    getAllRdv
+    getAllRdv,
+    getAllRdvEnCours
 }
