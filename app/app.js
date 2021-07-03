@@ -6,6 +6,7 @@ const db = require('./models');
 
 const auth = require("./routes/auth.route")
 const medecin = require('./routes/medecin.route');
+const rdv = require('./routes/rendezVous.route');
 
 
 app.use(express.static('public'));
@@ -29,6 +30,7 @@ db.sequelize.sync()
 
 app.use("/auth", auth)
 app.use("/medecin", medecin)
+app.use("/rendezVous", rdv)
 
 
 app.get("/", (req, res) => {

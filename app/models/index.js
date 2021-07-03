@@ -21,6 +21,10 @@ db.sequelize = sequelize;
 
 db.medecin = require("./medecin.model.js")(sequelize, Sequelize);
 db.patient = require("./patient.model.js")(sequelize, Sequelize);
+db.rendezVous = require("./rendezVous.model.js")(sequelize, Sequelize);
+db.conseil = require("./conseil.model.js")(sequelize, Sequelize);
+db.heureTravail = require("./heureTravail.model.js")(sequelize, Sequelize);
+
 
 
 
