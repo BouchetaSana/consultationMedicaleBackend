@@ -1,11 +1,43 @@
 const db = require("../models");
 const { Op } = require("sequelize");
+const jwt = require('jsonwebtoken');
+
 
 const RendezVous = db.rendezVous;
 const HeureTravail = db.heureTravail;
 
 const addRdv = async(req, res) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
 
+    if (token == null) {
+        res.status(403).send({
+            error: "invalid_access_token",
+            message: "Access Forbidden,invalid token",
+        });
+        return;
+    }
+
+    try {
+        const user = jwt.verify(token, process.env.JWT_SECRET);
+        if (user != undefined) {
+            const role = user.role
+            if (role != "medecin" && role != "patient") {
+                res.status(403).send({
+                    error: "authorization_required",
+                    message: "Access Forbidden,you can't do this operation",
+                });
+                return;
+            }
+        }
+
+    } catch (err) {
+        res.status(403).send({
+            error: "invalid_access_token",
+            message: "Access Forbidden,invalid token",
+        });
+        return;
+    }
     // Validate request
     if ((!req.body.idMedecin) || (!req.body.idPatient) || (!req.body.heureRdv) || (!req.body.heureFinEstimee)) {
         res.status(400).send({
@@ -102,6 +134,37 @@ const addRdv = async(req, res) => {
 const getAllRdv = (req, res) => {
     const id = req.params.id;
 
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (token == null) {
+        res.status(403).send({
+            error: "invalid_access_token",
+            message: "Access Forbidden,invalid token",
+        });
+        return;
+    }
+
+    try {
+        const user = jwt.verify(token, process.env.JWT_SECRET);
+        if (user != undefined) {
+            const role = user.role
+            if (role != "medecin") {
+                res.status(403).send({
+                    error: "authorization_required",
+                    message: "Access Forbidden,you can't do this operation",
+                });
+                return;
+            }
+        }
+
+    } catch (err) {
+        res.status(403).send({
+            error: "invalid_access_token",
+            message: "Access Forbidden,invalid token",
+        });
+        return;
+    }
     RendezVous.findAll({
             idMedecin: id,
         })
@@ -117,6 +180,39 @@ const getAllRdv = (req, res) => {
 
 const getAllRdvEnCours = (req, res) => {
     const id = req.params.id;
+
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (token == null) {
+        res.status(403).send({
+            error: "invalid_access_token",
+            message: "Access Forbidden,invalid token",
+        });
+        return;
+    }
+
+    try {
+        const user = jwt.verify(token, process.env.JWT_SECRET);
+        if (user != undefined) {
+            const role = user.role
+            if (role != "medecin") {
+                res.status(403).send({
+                    error: "authorization_required",
+                    message: "Access Forbidden,you can't do this operation",
+                });
+                return;
+            }
+        }
+
+    } catch (err) {
+        res.status(403).send({
+            error: "invalid_access_token",
+            message: "Access Forbidden,invalid token",
+        });
+        return;
+    }
+
     RendezVous.findAll({
             where: {
                 [Op.and]: {

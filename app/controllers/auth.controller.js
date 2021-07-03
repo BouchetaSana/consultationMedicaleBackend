@@ -1,4 +1,6 @@
 const db = require("../models");
+var jwt = require("jsonwebtoken");
+
 const Medecin = db.medecin;
 const Patient = db.patient;
 
@@ -20,8 +22,9 @@ const authMedecin = async(req, res, next) => {
                 res.status(401).send({ success: false, error: "Invalid credentials" })
 
             } else {
-                res.send({ success: true, role: "medecin" });
                 console.log("medecin connection established!")
+                const token = jwt.sign({ id: medecin.idMedecin, role: "medecin" }, process.env.JWT_SECRET);
+                res.send({ success: true, token: token });
             }
         }
     } catch (err) {
@@ -41,17 +44,18 @@ const authPatinet = async(req, res, next) => {
     }
     // check for patinet
     try {
-        const patinet = await Patient.findOne({ where: { numero: numero } })
-        if (!patinet) {
+        const patient = await Patient.findOne({ where: { numero: numero } })
+        if (!patient) {
             res.status(401).send({ success: false, error: "Invalid credentials" })
         } else {
             //console.log(motdepasse == patinet.motDePasse)
-            if (motdepasse != patinet.motDePasse) {
+            if (motdepasse != patient.motDePasse) {
                 res.status(401).send({ success: false, error: "Invalid credentials" })
 
             } else {
-                res.send({ success: true, role: "patinet" });
                 console.log("patient connection established!")
+                const token = jwt.sign({ id: patient.idPatient, role: "patient" }, process.env.JWT_SECRET);
+                res.send({ success: true, token: token });
             }
         }
     } catch (err) {
