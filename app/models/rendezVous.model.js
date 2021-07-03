@@ -21,6 +21,10 @@ module.exports = function(sequelize, Sequelize) {
         },
         heureFinEstimee: {
             type: Sequelize.TIME,
+        },
+        EnCours: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: true,
         }
     }, {
         freezeTableName: true,

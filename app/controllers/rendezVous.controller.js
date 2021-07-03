@@ -16,14 +16,14 @@ const addRdv = async(req, res) => {
         return;
     }
 
-    if (req.body.dateRdv < Date.now()) {
+    let today = new Date().toISOString().slice(0, 10)
+    if (req.body.dateRdv < today) {
         res.status(400).send({
             error: "validation_error",
             message: "Error in date!"
         });
         return;
     }
-
 
     if (req.body.heureRdv > req.body.heureFinEstimee) {
         res.status(400).send({
@@ -97,6 +97,24 @@ const addRdv = async(req, res) => {
         });
     }
 };
+
+
+
+const getAllRdv = (req, res) => {
+
+    RendezVous.findAll({
+            idMedecin: req.params.id,
+        })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving RDV."
+            });
+        });
+};
 module.exports = {
-    addRdv
+    addRdv,
+    getAllRdv
 }
