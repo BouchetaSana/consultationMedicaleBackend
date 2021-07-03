@@ -1,6 +1,5 @@
 const db = require("../models");
 const { Op } = require("sequelize");
-var dateFormat = require('dateformat');
 
 const RendezVous = db.rendezVous;
 const HeureTravail = db.heureTravail;

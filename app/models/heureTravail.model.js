@@ -14,7 +14,9 @@ module.exports = function(sequelize, Sequelize) {
         heureDebut: {
             type: Sequelize.TIME,
         },
-
+        heureFin: {
+            type: Sequelize.TIME,
+        },
     }, {
         freezeTableName: true,
         tableName: 'heureTravail',
