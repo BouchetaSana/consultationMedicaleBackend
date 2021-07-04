@@ -7,7 +7,7 @@ const HeureTravail = db.heureTravail;
 
 
 const getAllMedecins = (req, res) => {
-    const authHeader = req.headers['authorization']
+    /* const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 
     if (token == null) {
@@ -38,7 +38,7 @@ const getAllMedecins = (req, res) => {
         });
         return;
     }
-
+*/
     Medecin.findAll()
         .then((data) => {
             res.status(200).send(data);
@@ -52,38 +52,38 @@ const getAllMedecins = (req, res) => {
 
 const getMedecin = async(req, res) => {
     const id = req.params.id;
+    /*
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1]
 
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-
-    if (token == null) {
-        res.status(403).send({
-            error: "invalid_access_token",
-            message: "Access Forbidden,invalid token",
-        });
-        return;
-    }
-
-    try {
-        const user = jwt.verify(token, process.env.JWT_SECRET);
-        if (user != undefined) {
-            const role = user.role
-            if (role != "medecin" && role != "patient") {
-                res.status(403).send({
-                    error: "authorization_required",
-                    message: "Access Forbidden,you can't do this operation",
-                });
-                return;
-            }
+        if (token == null) {
+            res.status(403).send({
+                error: "invalid_access_token",
+                message: "Access Forbidden,invalid token",
+            });
+            return;
         }
 
-    } catch (err) {
-        res.status(403).send({
-            error: "invalid_access_token",
-            message: "Access Forbidden,invalid token",
-        });
-        return;
-    }
+        try {
+            const user = jwt.verify(token, process.env.JWT_SECRET);
+            if (user != undefined) {
+                const role = user.role
+                if (role != "medecin" && role != "patient") {
+                    res.status(403).send({
+                        error: "authorization_required",
+                        message: "Access Forbidden,you can't do this operation",
+                    });
+                    return;
+                }
+            }
+
+        } catch (err) {
+            res.status(403).send({
+                error: "invalid_access_token",
+                message: "Access Forbidden,invalid token",
+            });
+            return;
+        }*/
 
     try {
         const medecin = await Medecin.findByPk(id)
@@ -104,38 +104,38 @@ const getMedecin = async(req, res) => {
 
 const heureTravail = async(req, res) => {
     const id = req.params.id;
+    /*
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1]
 
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-
-    if (token == null) {
-        res.status(403).send({
-            error: "invalid_access_token",
-            message: "Access Forbidden,invalid token",
-        });
-        return;
-    }
-
-    try {
-        const user = jwt.verify(token, process.env.JWT_SECRET);
-        if (user != undefined) {
-            const role = user.role
-            if (role != "medecin" && role != "patient") {
-                res.status(403).send({
-                    error: "authorization_required",
-                    message: "Access Forbidden,you can't do this operation",
-                });
-                return;
-            }
+        if (token == null) {
+            res.status(403).send({
+                error: "invalid_access_token",
+                message: "Access Forbidden,invalid token",
+            });
+            return;
         }
 
-    } catch (err) {
-        res.status(403).send({
-            error: "invalid_access_token",
-            message: "Access Forbidden,invalid token",
-        });
-        return;
-    }
+        try {
+            const user = jwt.verify(token, process.env.JWT_SECRET);
+            if (user != undefined) {
+                const role = user.role
+                if (role != "medecin" && role != "patient") {
+                    res.status(403).send({
+                        error: "authorization_required",
+                        message: "Access Forbidden,you can't do this operation",
+                    });
+                    return;
+                }
+            }
+
+        } catch (err) {
+            res.status(403).send({
+                error: "invalid_access_token",
+                message: "Access Forbidden,invalid token",
+            });
+            return;
+        }*/
 
     var options = {};
     let jour = req.body.jour;
