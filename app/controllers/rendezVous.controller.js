@@ -282,9 +282,117 @@ const getAllRdvEnCours = (req, res) => {
             });
         });
 };
+
+
+const getAllRdvPatient = (req, res) => {
+    const id = req.params.id;
+    /*
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1]
+
+        if (token == null) {
+            res.status(403).send({
+                error: "invalid_access_token",
+                message: "Access Forbidden,invalid token",
+            });
+            return;
+        }
+
+        try {
+            const user = jwt.verify(token, process.env.JWT_SECRET);
+            if (user != undefined) {
+                const role = user.role
+                if (role != "medecin" && role != "patient") {
+                    res.status(403).send({
+                        error: "authorization_required",
+                        message: "Access Forbidden,you can't do this operation",
+                    });
+                    return;
+                }
+            }
+
+        } catch (err) {
+            res.status(403).send({
+                error: "invalid_access_token",
+                message: "Access Forbidden,invalid token",
+            });
+            return;
+        }*/
+    RendezVous.findAll({
+            idPatient: id,
+        })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving RDV."
+            });
+        });
+};
+
+
+
+const annulerRdv = (req, res) => {
+    const id = req.params.id;
+    /*
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1]
+
+        if (token == null) {
+            res.status(403).send({
+                error: "invalid_access_token",
+                message: "Access Forbidden,invalid token",
+            });
+            return;
+        }
+
+        try {
+            const user = jwt.verify(token, process.env.JWT_SECRET);
+            if (user != undefined) {
+                const role = user.role
+                if (role != "medecin" ) {
+                    res.status(403).send({
+                        error: "authorization_required",
+                        message: "Access Forbidden,you can't do this operation",
+                    });
+                    return;
+                }
+            }
+
+        } catch (err) {
+            res.status(403).send({
+                error: "invalid_access_token",
+                message: "Access Forbidden,invalid token",
+            });
+            return;
+        }*/
+
+    RendezVous.destroy({
+            where: {
+                idRdv: id,
+            }
+        })
+        .then(rowDeleted => {
+            if (rowDeleted === 1) {
+                res.status(200).send({ message: "Deleted successfully" });
+            } else {
+                res.status(404).send({ message: "RDV not found" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while deleting RDV."
+            });
+        });
+};
+
+
 module.exports = {
     addRdv,
     getRdv,
     getAllRdv,
-    getAllRdvEnCours
+    getAllRdvEnCours,
+    getAllRdvPatient,
+    annulerRdv
 }
