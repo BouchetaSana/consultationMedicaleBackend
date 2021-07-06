@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const RendezVous = db.rendezVous;
 const HeureTravail = db.heureTravail;
+const Medecin = db.medecin;
 
 const addRdv = async(req, res) => {
     console.log(req.body);
@@ -165,9 +166,12 @@ const getRdv = (req, res) => {
             return;
         }*/
     RendezVous.findOne({
-            idRdv: id,
+            where: {
+                idRdv: id,
+            }
         })
         .then(data => {
+            console.log(data)
             res.send(data);
         })
         .catch(err => {
@@ -213,7 +217,9 @@ const getAllRdv = (req, res) => {
             return;
         }*/
     RendezVous.findAll({
-            idMedecin: id,
+            where: {
+                idMedecin: id,
+            }
         })
         .then(data => {
             res.send(data);
@@ -284,42 +290,47 @@ const getAllRdvEnCours = (req, res) => {
 };
 
 
-const getAllRdvPatient = (req, res) => {
+/*const getAllRdvPatient = async(req, res) => {
     const id = req.params.id;
-    /*
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1]
 
-        if (token == null) {
-            res.status(403).send({
-                error: "invalid_access_token",
-                message: "Access Forbidden,invalid token",
-            });
-            return;
-        }
-
-        try {
-            const user = jwt.verify(token, process.env.JWT_SECRET);
-            if (user != undefined) {
-                const role = user.role
-                if (role != "medecin" && role != "patient") {
-                    res.status(403).send({
-                        error: "authorization_required",
-                        message: "Access Forbidden,you can't do this operation",
-                    });
-                    return;
-                }
+    try {
+        const rdv = await RendezVous.findAll({
+            where: {
+                idPatient: id,
+            }
+        })
+        if (rdv.length > 0) {
+            for (i = 0; i < rdv.length; i++) {
+                console.log(rdv[i])
+                Medecin.findOne({
+                    where: { idMedecin: rdv[i].idMedecin }
+                }).then(med => {
+                    res.send({
+                        data: data,
+                        rdv: rdv
+                    })
+                }).catch()
             }
 
-        } catch (err) {
-            res.status(403).send({
-                error: "invalid_access_token",
-                message: "Access Forbidden,invalid token",
-            });
-            return;
-        }*/
+        }
+    } catch (err) {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving RDV."
+        });
+    }
+}*/
+
+
+
+
+
+
+const getAllRdvPatient = (req, res) => {
+    const id = req.params.id;
     RendezVous.findAll({
-            idPatient: id,
+            where: {
+                idPatient: id,
+            }
         })
         .then(data => {
             res.send(data);
@@ -330,9 +341,6 @@ const getAllRdvPatient = (req, res) => {
             });
         });
 };
-
-
-
 const annulerRdv = (req, res) => {
     const id = req.params.id;
     /*

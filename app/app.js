@@ -7,6 +7,10 @@ const db = require('./models');
 const auth = require("./routes/auth.route")
 const medecin = require('./routes/medecin.route');
 const rdv = require('./routes/rendezVous.route');
+const conseil = require('./routes/conseil.route');
+const traitement = require('./routes/traitement.route');
+const patient = require('./routes/patient.route');
+
 
 
 app.use(express.static('public'));
@@ -31,6 +35,11 @@ db.sequelize.sync()
 app.use("/auth", auth)
 app.use("/medecin", medecin)
 app.use("/rendezVous", rdv)
+app.use("/conseil", conseil)
+app.use("/traitement", traitement)
+app.use("/patient", patient)
+
+
 
 
 app.get("/", (req, res) => {
